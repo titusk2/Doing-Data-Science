@@ -1,0 +1,80 @@
+---
+title: "LIve Session 2 CLT"
+author: "Titus Karuri"
+date: "1/6/2024"
+output:
+  html_document:
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+#Titus Karuri
+# Simulator to Demonstrate CLT
+
+## Control Parameters
+```{r}
+n1 = 1000 # sample size per sample for 1st distribution
+n2 = 100 # sample size per sample for 2nd distribution (we will compare these distribuions) 
+simulations = 1000 #number of samples and thus number of xbars we will generate.  
+mu = 0; # mean parameter for use with normal distribuions
+sigma = 1; # standard deviation parameter for use with normal 
+
+#Generate a population of 10000000 from a chi-square distribution with 2 degrees of freedom  
+population =rnorm(10000000,0,1)
+value <- rchisq(n=population,df=2)
+hist(value)
+mean(value)
+sd(value)
+
+```
+
+## Data Holder
+```{r}
+xbar_holder1 = numeric(simulations) # This will hold all the sample means for the first distribution.
+xbar_holder2 = numeric(simulations) # This will hold all the sample means for the second distribution.
+```
+#Titus Karuri
+## Simulate and Store
+Adapt the CLT code to draw 10,000 means each of size 50 from this population 
+
+```{r}
+xbarvec = c() #global vector to hold sample means
+population = rnorm(10000000,0,1)
+xbar_generator = function(sample_size=50, num_samples=10000)
+{
+for (i in 1:num_samples)
+{ 
+  sample1 = sample(population,sample_size)
+  xbar1 = mean(sample1)
+  xbarvec = c(xbarvec,xbar1)
+  
+}
+  return(xbarvec)
+}
+
+xbars = xbar_generator(50,10000)
+length(xbars)
+hist(xbars)
+mean(xbars)
+sd(xbars)
+```
+
+## display the distribution of sample means (plot a histogram of the sample means)
+```{r}
+par(mfrow = c(2,1))
+hist(xbar_holder1, col = "blue", main = paste("Distribution of the sample mean: n = ", n1), xlab = "Dist 1 Sample Means", xlim = c(-4,4))
+hist(xbar_holder2, col = "red", main = paste("Distribution of the sample mean: n = ", n2), xlab = "Dist 2 Sample Means", xlim = c(-4,4))
+```
+
+## summary statistics of the distribution of the simulated sample means. 
+```{r}
+summary(xbar_holder1) #5 number summary and the mean
+summary(xbar_holder2) #5 number summary and the mean
+sd(xbar_holder1) # standard deviation of dstribuion 1
+sd(xbar_holder2) #standard deviation of distribuion 2
+
+```
+
+
